@@ -5,24 +5,23 @@ class Emiter {
   constructor(x, y, canvas) {
     this.position = new Vector(x, y);
     this.particles = [];
-    this.gravity = new Vector(0, 0.3);
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
   }
 
-  emit() {
+  emit(size) {
     if(Math.random() > 0) {
-      for(var i = 0; i < 5; i++) {
-        this.particles.push(new Particle(this.position.x, this.position.y));
+      for(var i = 0; i < 1; i++) {
+        this.particles.push(new Particle(this.position.x, this.position.y, size));
       }
     }
   }
 
-  update() {
+  update(gravity) {
     for(var particle of this.particles) {
-      // particle.applyForce(this.gravity, 0.98);
+      particle.applyForce(new Vector(0, gravity), 0.999);
       particle.update();
-      // particle.edges(this.canvas);
+      particle.edges(this.canvas);
     }
   
     for (let i = this.particles.length - 1; i >= 0; i--) {

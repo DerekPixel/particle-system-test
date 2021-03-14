@@ -1,14 +1,14 @@
 import Vector from './Vector.js';
 
 class Particle {
-  constructor(x, y) {
+  constructor(x, y, r) {
     this.position = new Vector(x, y)
     this.velocity = new Vector(
       ((Math.random() < 0.5 ? -1 : 1) * Math.random()) * 5, 
       ((Math.random() < 0.5 ? -1 : 1) * Math.random()) * 5
     );
     this.acceleration = new Vector(0, 0);
-    this.r = 10;
+    this.r = r;
     this.lifeTime = 50;
 
     this.red = Math.random() * 255;
