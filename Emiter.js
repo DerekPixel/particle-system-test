@@ -11,15 +11,15 @@ class Emiter {
 
   emit(size) {
     if(Math.random() > 0) {
-      for(var i = 0; i < 1; i++) {
+      for(var i = 0; i < 2; i++) {
         this.particles.push(new Particle(this.position.x, this.position.y, size));
       }
     }
   }
 
-  update(gravity) {
+  update(gravity, resistance) {
     for(var particle of this.particles) {
-      particle.applyForce(new Vector(0, gravity), 0.999);
+      particle.applyForce(new Vector(0, gravity), resistance);
       particle.update();
       particle.edges(this.canvas);
     }
