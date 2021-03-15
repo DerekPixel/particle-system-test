@@ -55,8 +55,8 @@ class Particle {
     ctx.save();
     ctx.translate(this.position.x, this.position.y);
     ctx.beginPath();
-    ctx.rect(0, 0, this.r, this.r);
-    // ctx.arc(0, 0, this.r, 0, Math.PI*2);
+    // ctx.rect(0, 0, this.r, this.r);
+    ctx.arc(0, 0, this.r, 0, Math.PI*2);
     ctx.fillStyle = `rgba(
       ${this.red}, 
       ${this.green}, 
