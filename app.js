@@ -11,48 +11,53 @@ canvas.height = 500;
 canvas.style.borderStyle = 'solid';
 canvas.style.borderWidth = '1px';
 
-var gravityDiv = document.createElement('div');
+const makeNewSlider = (name, min, max, value) => {
+  var div = document.createElement('div');
 
-var gravityLabel = document.createElement('label');
-gravityLabel.textContent = 'GRAVITY';
+  var label = document.createElement('label');
+  label.textContent = `${name}`;
 
-var gravitySlider = document.createElement('input');
-gravitySlider.type = 'range';
-gravitySlider.min = '0';
-gravitySlider.max = '20';
-gravitySlider.value = '6';
+  var slider = document.createElement('input');
+  slider.type = 'range';
+  slider.min = `${min}`;
+  slider.max = `${max}`;
+  slider.value = `${value}`;
 
-gravityDiv.append(gravityLabel);
-gravityDiv.append(gravitySlider);
+  div.append(label);
+  div.append(slider);
 
-var sizeDiv = document.createElement('div');
-
-var sizeLabel = document.createElement('label');
-sizeLabel.textContent = 'SIZE';
-
-var sizeSlider = document.createElement('input');
-sizeSlider.type = 'range';
-sizeSlider.min = '1';
-sizeSlider.max = '50';
-sizeSlider.value = '6';
-
-sizeDiv.append(sizeLabel);
-sizeDiv.append(sizeSlider);
-
-maindiv.append(canvas);
-maindiv.append(gravityDiv);
-maindiv.append(sizeDiv);
-
-
-
-
-gravitySlider.oninput = () => {
-  gravity = gravitySlider.value/20;
+  return {div, slider}
 }
 
-sizeSlider.oninput = () => {
-  size = sizeSlider.value;
-  console.log(size);
+var textInput = document.createElement('input');
+textInput.type = 'text';
+textInput.value = '0.997';
+
+
+var gravityDiv = makeNewSlider('GRAVITY', 0, 20, 6);
+var sizeDiv = makeNewSlider('SIZE', 1, 50, 6);
+
+maindiv.append(canvas);
+maindiv.append(gravityDiv.div);
+maindiv.append(sizeDiv.div);
+maindiv.append(textInput);
+
+gravityDiv.slider.oninput = () => {
+  gravity = gravityDiv.slider.value/20;
+}
+sizeDiv.slider.oninput = () => {
+  size = sizeDiv.slider.value;
+}
+
+textInput.oninput = () => {
+  var value = parseFloat(textInput.value);
+  if(value > 1) {
+    resistance = 1;
+  } else if(value < 0) {
+    resistance = 0;
+  } else {
+    resistance = value;
+  }
 }
 
 
@@ -63,6 +68,7 @@ var y = 250;
 
 var gravity = 0.3;
 var size = 6;
+var resistance = 0.997;
 
 var emiter = new Emiter(x, y, canvas, gravity);
 
@@ -74,6 +80,8 @@ function getCursorPosition(event, canvas) {
   emiter.position.y = event.clientY - rect.top;
 }
 
+
+
 canvas.addEventListener('mousemove', (e) => {
   getCursorPosition(e, canvas)
 })
@@ -82,7 +90,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
   emiter.emit(size);
-  emiter.update(gravity);
+  emiter.update(gravity, resistance);
   emiter.show();
 
 }
